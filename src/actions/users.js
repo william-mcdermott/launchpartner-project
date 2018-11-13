@@ -17,7 +17,7 @@ export const startAddUser = (userData = {}) => {
       createdAt = 0
     } = userData;
     const user = { name, bio, createdAt }
-    return database.ref(`${uid}/`).push(user).then((ref) => {
+    return database.ref('users').push(user).then((ref) => {
       dispatch(addUser({
         id: ref.key,
         ...user
