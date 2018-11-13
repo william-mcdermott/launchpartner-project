@@ -10,14 +10,15 @@ export const addUser = (user) => ({
 
 export const startAddUser = (userData = {}) => {
   return (dispatch, getState) => {
+    const uid = getState().auth.uid
     const {
       name = '',
       bio = '',
       createdAt = 0
     } = userData;
     const user = { name, bio, createdAt }
-    return database.ref(`users/`).push(user).then((ref) => {
-      dispatch(addExpense({
+    return database.ref(`${uid}/`).push(user).then((ref) => {
+      dispatch(addUser({
         id: ref.key,
         ...user
       }))
