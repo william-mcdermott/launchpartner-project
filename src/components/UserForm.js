@@ -19,7 +19,7 @@ export default class ExpenseForm extends React.Component {
     this.setState(() => ({ name }));
   };
   onPicChange = (e) => {
-    const pic = readFile(e);
+    const pic = e.target.value;
     this.setState(() => ({ pic }));
   };
   onBioChange = (e) => {
@@ -68,8 +68,10 @@ export default class ExpenseForm extends React.Component {
         >
         </textarea>
         <input
-          type="file"
-          name="pic"
+          type="text"
+          placeholder="Profile picture URL"
+          className="text-input"
+          value={this.state.pic}
           onChange={this.onPicChange}
         />
         <div>

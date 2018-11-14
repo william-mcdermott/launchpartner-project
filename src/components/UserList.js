@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
 import UserListItem from './UserListItem';
 
 export const UserList = (props) => (
@@ -7,7 +8,6 @@ export const UserList = (props) => (
     <div className="list-header">
       <div className="show-for-mobile">Users</div>
       <div className="show-for-desktop">User</div>
-      <div className="show-for-desktop">Pic</div>
     </div>
     <div className="list-body">
       {
@@ -20,6 +20,7 @@ export const UserList = (props) => (
         )
       }
     </div>
+    <Link to="/create"><i className="material-icons md-48">add_circle_outline</i></Link>
   </div>
 );
 
