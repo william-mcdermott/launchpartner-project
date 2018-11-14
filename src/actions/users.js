@@ -14,9 +14,10 @@ export const startAddUser = (userData = {}) => {
     const {
       name = '',
       bio = '',
+      pic = '',
       createdAt = 0
     } = userData;
-    const user = { name, bio, createdAt }
+    const user = { name, bio, createdAt, pic }
     return database.ref('users').push(user).then((ref) => {
       dispatch(addUser({
         id: ref.key,
@@ -35,7 +36,7 @@ export const editUser = (id, updates) => ({
 
 export const startEditUser = (id, updates) => {
   return (dispatch, getState) => {
-    return database.ref(`users/`).update(updates).then(() => {
+    return database.ref(`users`).update(updates).then(() => {
       dispatch(editUser(id, updates))
     });
   };

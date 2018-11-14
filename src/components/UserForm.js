@@ -9,6 +9,7 @@ export default class ExpenseForm extends React.Component {
     this.state = {
       name: props.user ? props.user.name : '',
       bio: props.user ? props.user.bio : '',
+      pic: props.user ? props.user.pic : '',
       createdAt: props.user ? moment(props.user.createdAt) : moment(),
       error: ''
     };
@@ -16,6 +17,10 @@ export default class ExpenseForm extends React.Component {
   onNameChange = (e) => {
     const name = e.target.value;
     this.setState(() => ({ name }));
+  };
+  onPicChange = (e) => {
+    const pic = readFile(e);
+    this.setState(() => ({ pic }));
   };
   onBioChange = (e) => {
     const bio = e.target.value;
@@ -38,6 +43,7 @@ export default class ExpenseForm extends React.Component {
       this.props.onSubmit({
         name: this.state.name,
         createdAt: this.state.createdAt.valueOf(),
+        pic: this.state.pic,
         bio: this.state.bio
       })
     }
@@ -61,6 +67,11 @@ export default class ExpenseForm extends React.Component {
           onChange={this.onBioChange}
         >
         </textarea>
+        <input
+          type="file"
+          name="pic"
+          onChange={this.onPicChange}
+        />
         <div>
           <button className="button">Save User</button>
         </div>
