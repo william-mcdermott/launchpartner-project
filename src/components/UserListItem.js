@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 const UserListItem = ({ id, name, bio, pic, createdAt }) => (
-  <Link className="list-item" to={`/edit/${id}`}>
+  <Link className="list-item" to={`/view/${id}`}>
     <div className="list-item-container">
       <div className="list-item-sub">
         <img src={pic} />
