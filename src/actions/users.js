@@ -36,7 +36,8 @@ export const editUser = (id, updates) => ({
 
 export const startEditUser = (id, updates) => {
   return (dispatch, getState) => {
-    return database.ref(`users`).update(updates).then(() => {
+    const uid = getState().auth.uid
+    return database.ref(`users/${uid}`).update(updates).then(() => {
       dispatch(editUser(id, updates))
     });
   };
