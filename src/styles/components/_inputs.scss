@@ -1,9 +1,16 @@
+label {
+  font-size: $font-size-large;
+  font-weight: 300;
+  height: 50px;
+}
+
 .text-input {
   border: 1px solid #cacccd;
   font-size: $font-size-large;
   font-weight: 300;
   height: 50px;
   padding: $s-size;
+  float: right;
 }
 
 .select {

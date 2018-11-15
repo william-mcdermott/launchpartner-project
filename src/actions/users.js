@@ -43,17 +43,26 @@ export const editUser = (id, updates) => ({
 export const startEditUser = (id, updates) => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid
-    return storage.ref().child(`${id}`).put(updates.pic).then(() => {
-      return storage.ref().child(`${id}`).getDownloadURL().then((url) => {
-        const updateObj = {
-          ...updates,
-          pic: url
-        }
-        return database.ref(`users/${id}`).update(updateObj).then(() => {
-          dispatch(editUser(id, updateObj))
-        });
+    if (typeof updates.pic === 'object') {
+      return storage.ref().child(`${id}`).put(updates.pic).then(() => {
+        return storage.ref().child(`${id}`).getDownloadURL().then((url) => {
+          const updateObj = {
+            ...updates,
+            pic: url
+          }
+          return database.ref(`users/${id}`).update(updateObj).then(() => {
+            dispatch(editUser(id, updateObj))
+          });
+        })
       })
-    })
+    } else {
+      const updateObj = {
+        ...updates,
+      }
+      return database.ref(`users/${id}`).update(updateObj).then(() => {
+        dispatch(editUser(id, updateObj))
+      });
+    }
   };
 };
 
@@ -75,7 +84,6 @@ export const startSetUsers = () => {
               id: childSnapshot.key,
               ...childSnapshot.val()
             });
-            console.log(users);
         });
         dispatch(setUsers(users))
       })

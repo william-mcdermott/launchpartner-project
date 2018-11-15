@@ -70,13 +70,15 @@ export default class ExpenseForm extends React.Component {
             onChange={this.onBioChange}
           >
           </textarea>
-          <input
+          <label>
+            Profile picture
+            <input
             type="file"
             // placeholder="Profile picture URL"
             className="text-input"
-            // value={this.state.pic}
             onChange={this.onPicChange}
-          />
+            />
+          </label>
           <div>
             <button className="button">{this.state.button ? this.state.button : 'Save User'}</button>
           </div>
