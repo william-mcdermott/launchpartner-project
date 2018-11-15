@@ -7,7 +7,7 @@ export const UserList = (props) => (
   <div className="content-container">
     <div className="list-header">
       <div className="show-for-mobile">Users</div>
-      <div className="show-for-desktop">User</div>
+      <div className="show-for-desktop">Users</div>
     </div>
     <div className="list-body">
       {
