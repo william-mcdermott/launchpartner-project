@@ -5,8 +5,9 @@ import { startEditUser } from '../actions/users'
 
 export class EditUserPage extends React.Component {
   onSubmit = (user) => {
-    this.props.startEditUser(this.props.user.id, user);
-    this.props.history.push('/');
+    this.props.startEditUser(this.props.user.id, user).then(() => {
+      this.props.history.push('/');
+    })
   }
   render() {
     return (

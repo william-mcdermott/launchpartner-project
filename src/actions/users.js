@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import database from '../firebase/firebase.js';
+import database,  { storage } from '../firebase/firebase.js';
 
 
 // ADD_USER
@@ -14,15 +14,21 @@ export const startAddUser = (userData = {}) => {
     const {
       name = '',
       bio = '',
-      pic = '',
       createdAt = 0
     } = userData;
-    const user = { name, bio, createdAt, pic }
+    const user = { name, bio, createdAt }
     return database.ref('users').push(user).then((ref) => {
-      dispatch(addUser({
-        id: ref.key,
-        ...user
-      }))
+      return storage.ref().child(`${ref.key}`).put(userData.pic).then(() => {
+        return storage.ref().child(`${ref.key}`).getDownloadURL().then((url) => {
+          return database.ref(`users/${ref.key}`).update({ pic: url }).then(() => {
+            dispatch(addUser({
+              id: ref.key,
+              pic: url,
+              ...user,
+            }))
+          })
+        })
+      })
     });
   };
 };
@@ -37,9 +43,17 @@ export const editUser = (id, updates) => ({
 export const startEditUser = (id, updates) => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid
-    return database.ref(`users/${id}`).update(updates).then(() => {
-      dispatch(editUser(id, updates))
-    });
+    return storage.ref().child(`${id}`).put(updates.pic).then(() => {
+      return storage.ref().child(`${id}`).getDownloadURL().then((url) => {
+        const updateObj = {
+          ...updates,
+          pic: url
+        }
+        return database.ref(`users/${id}`).update(updateObj).then(() => {
+          dispatch(editUser(id, updateObj))
+        });
+      })
+    })
   };
 };
 
@@ -51,16 +65,17 @@ export const setUsers = (users) => ({
 
 export const startSetUsers = () => {
   return (dispatch, getState) => {
-    return database.ref(`users`)
+    const uid = getState().auth.uid
+      return database.ref(`users`)
       .once('value')
       .then((snapshot) => {
         const users = [];
         snapshot.forEach((childSnapshot) => {
-          users.push({
-            id: childSnapshot.key,
-            ...childSnapshot.val()
-          });
-          console.log(users);
+            users.push({
+              id: childSnapshot.key,
+              ...childSnapshot.val()
+            });
+            console.log(users);
         });
         dispatch(setUsers(users))
       })

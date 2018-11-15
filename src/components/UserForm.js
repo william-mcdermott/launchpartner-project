@@ -11,6 +11,7 @@ export default class ExpenseForm extends React.Component {
       bio: props.user ? props.user.bio : '',
       pic: props.user ? props.user.pic : '',
       createdAt: props.user ? moment(props.user.createdAt) : moment(),
+      button: undefined,
       error: ''
     };
   }
@@ -19,7 +20,7 @@ export default class ExpenseForm extends React.Component {
     this.setState(() => ({ name }));
   };
   onPicChange = (e) => {
-    const pic = e.target.value;
+    const pic = e.target.files[0];
     this.setState(() => ({ pic }));
   };
   onBioChange = (e) => {
@@ -37,6 +38,7 @@ export default class ExpenseForm extends React.Component {
     } else {
       this.setState(() => {
         return {
+          button: 'Updating...',
           error: ''
         }
       })
@@ -50,34 +52,36 @@ export default class ExpenseForm extends React.Component {
   }
   render() {
     return (
-      <form className="form" onSubmit={this.onSubmit}>
-        {this.state.error && <p className="form__error">{this.state.error}</p>}
-        <input
-          type="text"
-          placeholder="Name"
-          autoFocus
-          className="text-input"
-          value={this.state.name}
-          onChange={this.onNameChange}
-        />
-        <textarea
-          placeholder="Add a description of yourself."
-          className="textarea"
-          value={this.state.bio}
-          onChange={this.onBioChange}
-        >
-        </textarea>
-        <input
-          type="text"
-          placeholder="Profile picture URL"
-          className="text-input"
-          value={this.state.pic}
-          onChange={this.onPicChange}
-        />
-        <div>
-          <button className="button">Save User</button>
-        </div>
-      </form>
+      <div id="user-form">
+        <form className="form" onSubmit={this.onSubmit}>
+          {this.state.error && <p className="form__error">{this.state.error}</p>}
+          <input
+            type="text"
+            placeholder="Name"
+            autoFocus
+            className="text-input"
+            value={this.state.name}
+            onChange={this.onNameChange}
+          />
+          <textarea
+            placeholder="Add a description of yourself."
+            className="textarea"
+            value={this.state.bio}
+            onChange={this.onBioChange}
+          >
+          </textarea>
+          <input
+            type="file"
+            // placeholder="Profile picture URL"
+            className="text-input"
+            // value={this.state.pic}
+            onChange={this.onPicChange}
+          />
+          <div>
+            <button className="button">{this.state.button ? this.state.button : 'Save User'}</button>
+          </div>
+        </form>
+      </div>
     )
   }
 }

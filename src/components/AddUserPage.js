@@ -5,8 +5,9 @@ import { startAddUser } from '../actions/users';
 
 export class AddUserPage extends React.Component {
   onSubmit = (user) => {
-    this.props.startAddUser(user);
-    this.props.history.push('/');
+    this.props.startAddUser(user).then(() => {
+      this.props.history.push('/');
+    })
   };
   render() {
     return (
